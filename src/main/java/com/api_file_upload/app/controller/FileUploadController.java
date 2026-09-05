@@ -4,11 +4,14 @@ import com.api_file_upload.app.helper.FileUploadHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class FileUploadController {
     @Autowired
@@ -34,7 +37,9 @@ public class FileUploadController {
             // file upload code...
             boolean f = fileUploadHelper.uploadFile(file);
             if(f) {
-                return ResponseEntity.ok("File Uploaded Successfully");
+//                return ResponseEntity.ok("File Uploaded Successfully");
+
+                return ResponseEntity.ok(ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/").path(file.getOriginalFilename()).toUriString());
             }
 
         } catch(Exception e) {
